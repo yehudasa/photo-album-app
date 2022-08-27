@@ -1,0 +1,9 @@
+#!/bin/sh
+
+PORT=$1
+
+[ "$PORT" == "" ] && PORT=3000
+
+echo $S3_ENDPOINT_URL
+
+python manage.py runserver $PORT

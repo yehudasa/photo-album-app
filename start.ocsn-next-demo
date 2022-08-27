@@ -1,0 +1,11 @@
+#!/bin/bash
+TMPF=$(mktemp)
+$HOME/dev/next-demo/app-conf > $TMPF
+. $TMPF
+rm $TMPF
+# export S3_OBJ_PREFIX
+# export S3_ACCESS_KEY_ID=90KLscc0Dz4U49HX-7Tx
+# export S3_SECRET_ACCESS_KEY=72ifGyF+LfYxFie7b/FMxDNJjwRCIUIdt2Nu0xq5
+# export S3_STORAGE_BUCKET_NAME=photos
+# export S3_ENDPOINT_URL=http://localhost:8000
+./start

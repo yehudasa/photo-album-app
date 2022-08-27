@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,6 +26,20 @@ SECRET_KEY = 'm-un_db=x5c@_6f%%ngz=4_$x%jqohc71$*yg2=8_5%4p&hh#('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
 
 ALLOWED_HOSTS = []
 
@@ -133,9 +149,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 #AWS_QUERYSTRING_AUTH = False
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-#AWS_ACCESS_KEY_ID = ''
-#AWS_SECRET_ACCESS_KEY = ''
-
-#AWS_STORAGE_BUCKET_NAME = ''
+AWS_ACCESS_KEY_ID = os.getenv('S3_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = os.getenv('S3_SECRET_ACCESS_KEY', '')
+AWS_STORAGE_BUCKET_NAME = os.getenv('S3_STORAGE_BUCKET_NAME', 'photos')
+AWS_S3_ENDPOINT_URL = os.getenv('S3_ENDPOINT_URL', 'http://localhost:8000')
+AWS_LOCATION = os.getenv('S3_OBJ_PREFIX', '')

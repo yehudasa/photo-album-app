@@ -3,6 +3,7 @@ from .models import Category, Photo
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
+from photoshare import settings
 # Create your views here.
 
 
@@ -55,7 +56,7 @@ def gallery(request):
             category__name=category, category__user=user)
 
     categories = Category.objects.filter(user=user)
-    context = {'categories': categories, 'photos': photos}
+    context = {'categories': categories, 'photos': photos, 'endpoint': settings.AWS_S3_ENDPOINT_URL }
     return render(request, 'photos/gallery.html', context)
 
 
