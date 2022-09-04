@@ -1,11 +1,32 @@
 #!/bin/bash
-TMPF=$(mktemp)
-$HOME/dev/next-demo/app-conf > $TMPF
-. $TMPF
-rm $TMPF
+
+ORIG_CONF=$(mktemp)
+while [ true ]; do
+$HOME/dev/next-demo/app-conf > $ORIG_CONF
+. $ORIG_CONF
 # export S3_OBJ_PREFIX
 # export S3_ACCESS_KEY_ID=90KLscc0Dz4U49HX-7Tx
 # export S3_SECRET_ACCESS_KEY=72ifGyF+LfYxFie7b/FMxDNJjwRCIUIdt2Nu0xq5
 # export S3_STORAGE_BUCKET_NAME=photos
 # export S3_ENDPOINT_URL=http://localhost:8000
-./start
+./start &
+PID=$!
+
+echo PID=$PID
+
+NEW_CONF=$(mktemp)
+while [ true ]; do
+        sleep 5
+        $HOME/dev/next-demo/app-conf > $NEW_CONF
+        diff -s $ORIG_CONF $NEW_CONF > /dev/null
+
+        if [ $? -ne 0 ]; then
+                pkill -f runserver
+                wait $PID
+                break
+        fi
+
+
+done
+
+done
